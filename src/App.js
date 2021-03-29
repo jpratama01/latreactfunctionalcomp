@@ -4,12 +4,12 @@ import MenuComp from './component/MenuComp';
 import LoginComp from './component/LoginComp';
 import HomeComp from './component/HomeComp';
 import RegisterComp from './component/RegisterComp';
-import Transaksi from './component/Transaksi';
 import Publik from './component/Publik';
 import ListMahasiswa from './component/ListMahasiswa';
-import RoleAdmin from './component/RoleAkses/RoleAdmin';
-import RoleStaff from './component/RoleAkses/RoleStaff';
-import RoleMember from './component/RoleAkses/RoleMember';
+import RoleAkses from './component/RoleAkses';
+import UseStateEffect from './component/UseStateEffect';
+import UseReducer from './component/UseReducer';
+import UseContext from './component/UseContext';
 
 //Context
 export const AuthContext = createContext()
@@ -20,7 +20,11 @@ const initialState = {
   user: null,
   token: null,
   tokenExpires: 0,
-  role: 0
+  role: 0,
+
+  jumlah: 0,
+  hargasatuan: 10000,
+  hargatotal: 0
 }
 
 const reducer = (state, action) => {
@@ -43,37 +47,41 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         user: null
       }
-    
+    case 'increment':
+      return {
+        ...state,
+        jumlah: state.jumlah + 1,
+        hargatotal: state.hargasatuan + (state.hargasatuan * state.jumlah)
+      };
+    case 'decrement':
+      return {
+        ...state,
+        jumlah: state.jumlah - 1,
+        hargatotal: (state.hargasatuan * state.jumlah) - state.hargasatuan};
     default:
       return state
   }
 }
 
-function App() {
+export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <BrowserRouter>
       <Switch>
-        <AuthContext.Provider value={{
-          state,
-          dispatch
-        }}>
+        <AuthContext.Provider value={{state, dispatch}}>
           <MenuComp />
           <Route exact path="/" component={Publik}/>
           <Route exact path="/login" component={LoginComp}/>
           <Route exact path="/dashboard" component={HomeComp}/>
-          <Route exact path="/transaksi" component={Transaksi}/>
           <Route exact path="/register" component = {RegisterComp}/>
           <Route exact path="/mahasiswa" component = {ListMahasiswa}/>
-          <Route exact path="/admin" component = {RoleAdmin}/>
-          <Route exact path="/staff" component = {RoleStaff}/>
-          <Route exact path="/member" component = {RoleMember}/>
+          <Route exact path="/akses" component = {RoleAkses}/>
+          <Route exact path="/usestateeffect" component = {UseStateEffect}/>
+          <Route exact path="/usereducer" component = {UseReducer}/>
+          <Route exact path="/usecontext" component = {UseContext}/>
         </AuthContext.Provider>
       </Switch>
     </BrowserRouter>
-
   );
 }
-
-export default App;

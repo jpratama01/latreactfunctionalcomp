@@ -1,20 +1,33 @@
 import React from 'react';
-import { Jumbotron, Button } from 'reactstrap';
+import { Jumbotron } from 'reactstrap';
+import Welcome from './Welcome';
+import Tingkat1 from './Tingkat1';
 
-function Publik() {
-    return (
-        <div>
-            <Jumbotron>
-                <h1 className="display-3">Home</h1>
-                <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
-                <hr className="my-2" />
-                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                <p className="lead">
-                    <Button color="primary">Learn More</Button>
-                </p>
-            </Jumbotron>
-        </div>
-    )
+function Publik(props) {
+
+  const comment = {
+    date: new Date(),
+    text: 'I hope you enjoy learning React!',
+    author: {
+      name: 'Hello Kitty',
+      avatarUrl: 'https://placekitten.com/g/64/64',
+    },
+  };
+  
+  return (
+    <>
+      <Jumbotron>
+        <h1 className="display-3">Latihan React Functional Component</h1>
+        <h2>1. props</h2>
+        <Welcome name='Sara' />
+        <Tingkat1
+          date={comment.date}
+          text={comment.text}
+          author={comment.author}
+        />
+      </Jumbotron>
+    </>
+  )
 }
 
 export default Publik
